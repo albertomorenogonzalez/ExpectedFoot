@@ -1,6 +1,8 @@
 # ExpectedFoot
 
-![]()
+<p align="center">
+  <img src=https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/logo.png width=400px>
+</p>
 
 ## Autores 
 
