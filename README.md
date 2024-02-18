@@ -356,19 +356,7 @@ players
 
   <div id="df-28393357-68b8-40bc-a0aa-89f832130b0f" class="colab-df-container">
     <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
+      
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
