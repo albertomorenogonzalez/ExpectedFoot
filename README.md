@@ -3981,23 +3981,23 @@ corr['xg'].sort_values(ascending=False)
 
 
 
-Tomando esta correlación vamos a quedarnos con los 7 primeras columnas:
+Tomando esta correlación vamos a quedarnos con los 8 primeras columnas:
 
-- `games`:
+- `goals`: Los goles que acaba metiendo realmente el jugador.
 
-- `goals`:
+- `goals_assists`: La suma de goles y asistencias.
 
-- `goals_assists`:
+- `goals_pens`: Los goles anotados que no han sido de penalti.
 
-- `goals_pens`:
+- `pens_att`: Los lanzamientos de penalti que ha realizado el jugador.
 
-- `pens_att`:
+- `progressive_carries`: Los avances progresivos en los últimos 10 metros de campo que pueden acabar en gol.
 
-- `progressive_carries`:
+- `pens_made`: Los lanzamientos de penalti anotados.
 
-- `pens_made`:
+- `assists`: Las asistencias que ha realizado el jugador.
 
-- `assists`:
+- `games`: Partidos que ha jugado el jugador en la temporada. Mientras más partidos juegue más ocasiones de gol puede generar.
 
 
 ```python
@@ -4011,24 +4011,38 @@ plt.show()
 
     
 ![scatter_matrix](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/graphics/output_92_0.png)
-    
+
+
+Pese a haber cierta dispersión en los datos, podemos ver como se pueden apreciar líneas rectas que marcan la correlación.
 
 
 ## Limpieza de los Datos
 
 Después de haber realizado un estudio de los datos vamos a quedarnos con los que nos han resultado realmente relevantes para el posterior entrenamiento:
 
-Ya hecho durante el scrapping:
+
+### Cambios Realizados durante el Scrapping
 
 - Cambio del formato de los minutos.
 
+![minute_format_change](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/scrapping%20data%20transform/minutes.jpg)
+
+<br>
+
 - Transformación de datos de `object` a `float` o `int` respectivamente.
+
+![data_type_change](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/scrapping%20data%20transform/data%20transform.jpg)
+
+<br>
 
 - Gestión de nulos: Pasamos los datos que nos llegan nulos a 0.
 
+![null_management](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/scrapping%20data%20transform/nulls.jpg)
+
+
 ### Preparación de PySpark para Trabajar los Datos:
 
-Para esta limpieza de datos vamos a usar PySpark.
+Para esta limpieza de datos vamos a usar PySpark. PySpark es una biblioteca de código abierto para análisis de datos distribuidos en el framework Apache Spark. Permite el procesamiento de grandes conjuntos de datos de manera distribuida en clústeres, utilizando el lenguaje de programación Python. PySpark facilita tareas como la manipulación, transformación y análisis de datos a gran escala, aprovechando la capacidad de procesamiento paralelo de Spark.
 
 
 ```python
@@ -5160,26 +5174,26 @@ for i in range(20):
 ```
 
     XG_Real    XG_Estimado   Error absoluto
-          0.10           0.08              0.02
-          0.40           1.80              1.40
-          0.00           0.42              0.42
-          1.10           1.50              0.40
-          4.00           5.30              1.30
-          0.20           0.50              0.30
-          1.10           1.30              0.20
+          0.20           0.33              0.12
           0.00           0.01              0.01
-          0.00           0.20              0.20
-          2.40           4.10              1.70
-          0.00           0.10              0.10
-          0.70           0.50              0.20
-          1.10           1.20              0.10
-          0.50           0.37              0.13
-          1.80           1.00              0.80
-          1.20           1.03              0.17
-          5.70           3.50              2.20
-          0.00           0.03              0.03
-          1.70           1.80              0.10
-          0.10           0.31              0.21
+          0.80           1.05              0.25
+          0.50           0.30              0.20
+          0.20           0.17              0.03
+          6.80           9.10              2.30
+          0.20           0.10              0.10
+          0.10           0.17              0.07
+          2.40           0.60              1.80
+          2.00           1.40              0.60
+          1.50           1.30              0.20
+          1.10           0.38              0.73
+          1.20           1.10              0.10
+          0.30           0.12              0.18
+          0.80           0.60              0.20
+          0.00           0.05              0.05
+          0.00           0.01              0.01
+          0.00           0.01              0.01
+          0.70           1.20              0.50
+          2.60           1.70              0.90
 
 
 
@@ -5196,8 +5210,8 @@ print("Error cuadrático medio: ", mean_squared_error(y_test, y_pred, squared=Fa
 print("Coeficiente de determinación: ", r2_score(y_test, y_pred))
 ```
 
-    Error cuadrático medio:  1.3843930500476962
-    Coeficiente de determinación:  0.7932164648875091
+    Error cuadrático medio:  1.2450269987871805
+    Coeficiente de determinación:  0.8117366127168071
 
 
 Ahora comporbaremos el resultado que obtiene al predecir los expected goals del top 10 de jugadores que obtuvimos previamente y veremos a ver cuantos de ellos aciertan (Lo haremos para cada modelo):
@@ -5219,17 +5233,30 @@ for i in range(10):
   print(f"{r:10.2f}   {e:12.2f}  {e_abs:16.2f}")
 ```
 
+]
+0 s
+pred = dt_model.predict(top_10_players[attributes])
+
+xg_pred = top_10_players['xg'].to_list()
+
+e_abs_count = []
+
+print("XG_Real    XG_Estimado   Error absoluto")
+for i in range(10):
+  r = pred[i]
+  e = xg_pred[i]
+
     XG_Real    XG_Estimado   Error absoluto
-         30.70          33.20              2.50
-         28.40          31.30              2.90
-         20.20          30.70             10.50
+         33.20          33.20              0.00
+         31.30          31.30              0.00
+         30.70          30.70              0.00
          30.70          30.70              0.00
          28.60          28.60              0.00
          28.40          28.40              0.00
-         28.40          28.00              0.40
+         30.70          28.00              2.70
          27.90          27.90              0.00
          27.70          27.70              0.00
-         27.10          27.20              0.10
+         27.20          27.20              0.00
 
 
 
@@ -5242,7 +5269,7 @@ zero_per = (len(zero_num) / len(e_abs_count)) * 100
 print("Porcentaje de acierto:", zero_per, "%")
 ```
 
-    Porcentaje de acierto: 50.0 %
+    Porcentaje de acierto: 90.0 %
 
 
 ### Random Forest
@@ -5693,23 +5720,18 @@ else:
     Usuario: comenzar
     Usuario: Introduce el nombre del jugador que desea analizar Roberto Fernández
     ExpectedFoot: Vamos a analizar al jugador Roberto Fernández
-    Usuario: ¿Cuántos partidos ha jugado el jugador? 20
-    ExpectedFoot: Roberto Fernández ha jugado 20 partidos.
-    Usuario: ¿Cuántos goles ha marcado el jugador? 10
-    ExpectedFoot: Roberto Fernández ha marcado 10 goles.
+    Usuario: ¿Cuántos partidos ha jugado el jugador? 24
+    ExpectedFoot: Roberto Fernández ha jugado 24 partidos.
+    Usuario: ¿Cuántos goles ha marcado el jugador? 11
+    ExpectedFoot: Roberto Fernández ha marcado 11 goles.
     Usuario: ¿Cuántas asistencias ha realizado el jugador? 4
     ExpectedFoot: Roberto Fernández ha realizado 4 asistencias de gol.
-    ExpectedFoot: La suma de goles y asistencias juntas son 14
+    ExpectedFoot: La suma de goles y asistencias juntas son 15
     Usuario: ¿Cuántos penaltis ha ejecutado el jugador? 1
     ExpectedFoot: Roberto Fernández ha tirado 1 penaltis
     Usuario: ¿Cuántos goles de penalti ha marcado el jugador de los 1 penaltis ejecutados? 1
-    ExpectedFoot: Según los datos de goles de penalti, los goles marcados en jugadas son 9 goles
-    Usuario: ¿Cuántos avances con la pelota hacia el área ha realizado con éxito? 30
-    ExpectedFoot: Roberto Fernández ha regateado exitosamente 30 veces a jugadores cerca del aerea
-    Roberto Fernández ha marcado 10 goles en 20 partidos, asistiendo 4 veces, ha ejecutado 1 penaltis, de los cuales ha marcado 1 y los goles marcados en jugada han sido 9.
-     El resultado de los goles esperados del jugador es de 8.20 goles por temporada
-
-
-    /usr/local/lib/python3.10/dist-packages/sklearn/base.py:439: UserWarning: X does not have valid feature names, but DecisionTreeRegressor was fitted with feature names
-      warnings.warn(
-
+    ExpectedFoot: Según los datos de goles de penalti, los goles marcados en jugadas son 10 goles
+    Usuario: ¿Cuántos avances con la pelota hacia el área ha realizado con éxito? 40
+    ExpectedFoot: Roberto Fernández ha regateado exitosamente 40 veces a jugadores cerca del aerea
+    Roberto Fernández ha marcado 11 goles en 24 partidos, asistiendo 4 veces, ha ejecutado 1 penaltis, de los cuales ha marcado 1 y los goles marcados en jugada han sido 10.
+     El resultado de los goles esperados del jugador es de 7.20 goles por temporada
