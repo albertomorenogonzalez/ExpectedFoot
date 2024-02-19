@@ -134,16 +134,9 @@ language = "inglés"
 def translate(text):
     if translator.detect(text).lang != language and text is not None and not text.isdigit() and text !=jugador:  
         translated_text = ""
-        if language == "español":
-            translation = translator.translate(text, dest='es')
-            if isinstance(translation.text, str):
-               print(translation.text)
-               translated_text = translation.text
-        elif language == "inglés":
+        if language == "inglés":
             translation = translator.translate(text, dest='en')
-            if isinstance(translation.text, str):
-               print(translation.text)
-               translated_text = translation.text
+            translated_text = translation.text
         translated_text = translated_text.replace("Pie esperado", "ExpectedFoot")
         translated_text = translated_text.replace("ExpectaDfoot", "ExpectedFoot")
         return translated_text
