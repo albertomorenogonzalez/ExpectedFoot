@@ -136,10 +136,12 @@ def translate(text):
         translated_text = ""
         if language == "español":
             translation = translator.translate(text, dest='es')
-            translated_text = translation.text
+            if translation.text is not None:
+               translated_text = translation.text
         elif language == "inglés":
             translation = translator.translate(text, dest='en')
-            translated_text = translation.text
+            if translation.text is not None:
+               translated_text = translation.text
         translated_text = translated_text.replace("Pie esperado", "ExpectedFoot")
         translated_text = translated_text.replace("ExpectaDfoot", "ExpectedFoot")
         return translated_text
