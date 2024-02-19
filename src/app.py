@@ -95,8 +95,7 @@ def response(user_input):
         if not user_input.isdigit():
             return error_responses[2]
         elif int(user_input) > goals or int(user_input) > pens_att:
-            return assists+" "+pens_att+" "+goals
-           # return error_responses[3]
+            return error_responses[3]
         else:
             st.session_state["paso"] = pasos[6]
             pens_made = int(user_input)
@@ -133,7 +132,7 @@ translator = Translator()
 language = "inglés"
 
 def translate(text):
-    if translator.detect(text).lang != language and text is not None and not text.isdigit():  
+    if translator.detect(text).lang != language and text is not None and not text.isdigit() and text !=jugador:  
         translated_text = ""
         if language == "español":
             translation = translator.translate(text, dest='es')
