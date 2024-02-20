@@ -3,26 +3,15 @@ from googletrans import Translator
 
 translator = Translator()
 
-def translate_text(text, chosen_language="inglés"):
-    translated_text = ""
-    if chosen_language == "español":
-        translation = translator.translate(text, dest='es')
-        translated_text = translation.text
-    elif chosen_language == "inglés":
-        translation = translator.translate(text, dest='en')
-        translated_text = translation.text
-
-    return translated_text
-
 def chatbot_message(user, message):
     translated_message = translate(message)
     translated_message = translated_message.replace("Pie esperado", "ExpectedFoot")
     translated_message = translated_message.replace("ExpectaDfoot", "ExpectedFoot")
-    return f"{user}: {translated_message}"
+    print(f"{user}: {translated_message}")
 
 def ask_question_and_get_input(question):
     translated_question = translate(question)
-    return f"Usuario: {translated_question}"
+    return input(f"Usuario: {translated_question} ")
 
 def choose_language():
     while True:
@@ -31,8 +20,6 @@ def choose_language():
             return language_choice
         else:
             print("Por favor, seleccione un idioma válido.")
-def choose_language(language):
-    chosen_language=language.lower()
 
 def translate(text):
     global chosen_language
