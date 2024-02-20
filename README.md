@@ -66,7 +66,7 @@ Cada jugador en el html está representado por una etiqueta `tr` con todas los v
 
 Para obtener todos los datos necesarios para crear un modelo eficiente lo hemos hecho de la siguiente manera:
 
-<mark><sub>**Nota**: El siguiente código es recomendable no ejecutarlo ya que el web scrapping no es una práctica que acepten la mayoría de las páginas web, sobretodo si es un número elevado de páginas como es nuestro caso. La extracción de los datos se ha hecho primero antes de insertar el código en el colab. El código se ha ejecutado cinco veces respectivamente cambiando cada liga de forma manual. La ejecución del código se ha realizado de forma cautelar y segmentada para evitar el bloqueo de la IP por parte de la web. Esta práctica se ha realizado con fines educativos, no pretendemos lucrarnos de ello.</sub></mark>
+<mark><sub>**Nota**: El siguiente código no está disponible para ejecutarlo ya que el web scrapping no es una práctica que acepten la mayoría de las páginas web, sobretodo si es un número elevado de páginas como es nuestro caso. La extracción de los datos se ha hecho primero antes de insertar el código en el colab. El código se ha ejecutado cinco veces respectivamente cambiando cada liga de forma manual. La ejecución del código se ha realizado de forma cautelar y segmentada para evitar el bloqueo de la IP por parte de la web. Esta práctica se ha realizado con fines educativos, no pretendemos lucrarnos de ello.</sub></mark>
 
 
 ```python
