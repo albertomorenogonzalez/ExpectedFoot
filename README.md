@@ -4032,7 +4032,7 @@ Después de haber realizado un estudio de los datos vamos a quedarnos con los qu
 ![null_management](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/scrapping%20data%20transform/nulls.jpg)
 
 
-### Preparación de PySpark para Trabajar los Datos:
+### Preparación de PySpark para Trabajar los Datos
 
 Para esta limpieza de datos vamos a usar PySpark. PySpark es una biblioteca de código abierto para análisis de datos distribuidos en el framework Apache Spark. Permite el procesamiento de grandes conjuntos de datos de manera distribuida en clústeres, utilizando el lenguaje de programación Python. PySpark facilita tareas como la manipulación, transformación y análisis de datos a gran escala, aprovechando la capacidad de procesamiento paralelo de Spark.
 
@@ -4045,15 +4045,21 @@ Para esta limpieza de datos vamos a usar PySpark. PySpark es una biblioteca de c
 
 
 ```python
+# Importamos e inicializamos findspark para usar Spark en python sin tener que 
+# configurar manualmente las variables de entorno.
 import findspark
 findspark.init()
 
+# Importamos PySpark y sus funciones SQL.
 import pyspark
 from pyspark.sql import functions as f
 ```
 
 
 ```python
+# Inicializamos la sesión de PySpark para configurar el entorno de trabajo para
+# el procesamiento distribuido de datos y permitir la carga de datos, la optimización
+# de consultas y la interacción de clusteres con Spark.
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder\
@@ -4064,6 +4070,7 @@ spark = SparkSession.builder\
 
 
 ```python
+# Creamos un DataFrame de PySpark en base al DataFrame de Pandas que ya tenemos.
 players_spark = spark.createDataFrame(players)
 players_spark
 ```
@@ -4074,9 +4081,8 @@ players_spark
     DataFrame[player: string, season: string, team: string, games: bigint, games_starts: bigint, minutes: bigint, minutes_90s: double, goals: bigint, assists: bigint, goals_assists: bigint, goals_pens: bigint, pens_made: bigint, pens_att: bigint, cards_yellow: bigint, cards_red: bigint, xg: double, npxg: double, xg_assist: double, npxg_xg_assist: double, progressive_carries: bigint, progressive_passes: bigint, goals_per90: double, assists_per90: double, goals_assists_per90: double, goals_pens_per90: double, goals_assists_pens_per90: double, xg_per90: double, xg_assist_per90: double, xg_xg_assist_per90: double, npxg_per90: double, npxg_xg_assist_per90: double]
 
 
-
-
 ```python
+# Mostramos las primeras 5 filas.
 players_spark.show(5)
 ```
 
@@ -4093,7 +4099,10 @@ players_spark.show(5)
     
 
 
-### Eliminación de los Datos de las temporadas 2015/2016 y 2016/2017
+Ahora que ya tenemos los datos listos para trabajarlos con PySpark, vamos a proceder a hacer las transformaciones necesarias:
+
+
+### Eliminación de los Datos de las Temporadas 2015/2016 y 2016/2017
 
 
 ```python
