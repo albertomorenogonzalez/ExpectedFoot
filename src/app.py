@@ -10,6 +10,27 @@ modelo_ruta = 'model/xg_model_decision_tree_regressor.pkl'
 xg_model_decision_tree_regressor = joblib.load(modelo_ruta)
 
 
+ruta_imagen_local = os.path.join("media", "logo.png")
+ruta_imagen_local_pelota = os.path.join("media", "logo_pelota.png")
+st.set_page_config(page_icon=ruta_imagen_local_pelota, page_title="ExpectedFoot")
+
+
+page = """
+<style>
+[data-testid=stAppViewContainer]{
+    background-color: #169E79
+}
+.sidebar{
+    background-color: #244155; 
+}
+.css-1ytj5ow {
+    background-color: #244155; /* Puede que necesites ajustar esto */
+}
+</style>
+"""
+
+st.markdown(page, unsafe_allow_html=True)
+
 
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
@@ -141,19 +162,22 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
         
       
 translator = Translator()
-language = "inglés"
+if "language" not in st.session_state:
+    st.session_state["language"] = ""
 
 def translate(text):
-    global language
+    
     if text != st.session_state["jugador"] and text is not None and not text.isdigit() and text!="":
         try:
             translated_text = ""
-            if language == "español":
+            if st.session_state["language"]=="":
+                return text
+            if st.session_state["language"] == "español":
                 if st.session_state["jugador"]!="":
                     text=text.replace(" "+st.session_state["jugador"]+" "," the player")
                 translation = translator.translate(text, dest='es')
                 translated_text = translation.text
-            elif language == "inglés":
+            elif  st.session_state["language"] == "inglés":
                 if st.session_state["jugador"]!="":
                     text=text.replace(" "+st.session_state["jugador"]+" "," el jugador")
                 translation = translator.translate(text, dest='en')
@@ -164,6 +188,8 @@ def translate(text):
                 translated_text = translated_text.replace(" el jugador", " "+st.session_state["jugador"])
             if st.session_state["jugador"]!="":
                 translated_text = translated_text.replace(" the player", " "+st.session_state["jugador"])
+            if translated_text is None or translated_text=="":
+                return text
             return translated_text
         except Exception as e:
             print(f"Error en la traducción: {e}")
@@ -171,9 +197,8 @@ def translate(text):
         return text
 
 
-ruta_imagen_local = os.path.join("media", "logo_redondeado.png")
-ruta_imagen_local_pelota = os.path.join("media", "logo_pelota.png")
-st.set_page_config(page_icon=ruta_imagen_local_pelota, page_title="ExpectedFoot")
+
+
 col1, col2, col3 = st.columns([1, 3, 1])
 
 # Espacio en blanco para las columnas izquierda y derecha
@@ -184,26 +209,32 @@ with col3:
 
 # Colocar la imagen en la columna central
 with col2:
-    st.image(ruta_imagen_local, width=200,use_column_width=True)
-    st.markdown("<h1 style='text-align: center; color: white;'>ExpectedFoot</h1>", unsafe_allow_html=True)
-
-
-    # Título centrado
-    #st.title("ExpectedFoot")
+    st.image(ruta_imagen_local, width=200, use_column_width=True)
 
 
 
 
-select_language_msg = translate("Selecciona el idioma: ")
-spanish_option = translate("Español")
-english_option = translate("Inglés")
+    colu1, colu2, colu3, colu4 = st.columns([1.5,4,1,4])
 
-option = st.sidebar.radio("Seleccionar idioma: ",(spanish_option, english_option), key='select_language', label_visibility="hidden")
+    select_language_msg = translate("Selecciona el idioma: ")
+    spanish_option = "Español"
+    english_option = "English"
 
-if option == spanish_option:
-    language = "español"
-elif option == english_option:
-    language = "inglés"
+    # Botón para Español en su propio contenedor
+    with colu1:
+        ()
+    with colu2:
+        container_es = st.container()
+        if container_es.button(spanish_option,key="A"):
+            st.session_state["language"] = "español"
+    with colu3:
+        ()
+    # Botón para Inglés en su propio contenedor
+    with colu4:
+        container_en = st.container()
+        if container_en.button(english_option,key="B"):
+            st.session_state["language"] = "inglés"
+
 
 if "messages" not in st.session_state:
   st.session_state["messages"] = [{"role":"assistant","avatar":"⚽" ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
@@ -233,4 +264,3 @@ if "messages" in st.session_state:
             st.chat_message("assistant",avatar="⚽").write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":"⚽" ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
             st.chat_message("assistant",avatar="⚽").write(translate("Si quiere analizar otro jugador introduzca su nombre"))
-
