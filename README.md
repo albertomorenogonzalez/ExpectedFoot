@@ -319,14 +319,6 @@ else:
   print("El directorio ya está descargado.")
 ```
 
-    Cloning into 'ExpectedFoot'...
-    remote: Enumerating objects: 46, done.[K
-    remote: Counting objects: 100% (46/46), done.[K
-    remote: Compressing objects: 100% (39/39), done.[K
-    remote: Total 46 (delta 13), reused 5 (delta 1), pack-reused 0[K
-    Receiving objects: 100% (46/46), 1.33 MiB | 4.29 MiB/s, done.
-    Resolving deltas: 100% (13/13), done.
-
 
 Guardamos los datos de cada liga en un DataFrame distinto.
 
@@ -4046,23 +4038,10 @@ Para esta limpieza de datos vamos a usar PySpark. PySpark es una biblioteca de c
 
 
 ```python
+# Instalación de las librerías necesarias para utilizar PySpark
 !pip install -q findspark
 !pip install pyspark
 ```
-
-    Collecting pyspark
-      Downloading pyspark-3.5.0.tar.gz (316.9 MB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m316.9/316.9 MB[0m [31m4.5 MB/s[0m eta [36m0:00:00[0m
-    [?25h  Preparing metadata (setup.py) ... [?25l[?25hdone
-    Requirement already satisfied: py4j==0.10.9.7 in /usr/local/lib/python3.10/dist-packages (from pyspark) (0.10.9.7)
-    Building wheels for collected packages: pyspark
-      Building wheel for pyspark (setup.py) ... [?25l[?25hdone
-      Created wheel for pyspark: filename=pyspark-3.5.0-py2.py3-none-any.whl size=317425345 sha256=b245e19e43142534abf0fe81dc44cbae02914692513b9a79099668329de2de68
-      Stored in directory: /root/.cache/pip/wheels/41/4e/10/c2cf2467f71c678cfc8a6b9ac9241e5e44a01940da8fbb17fc
-    Successfully built pyspark
-    Installing collected packages: pyspark
-    Successfully installed pyspark-3.5.0
-
 
 
 ```python
