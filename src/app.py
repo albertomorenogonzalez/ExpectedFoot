@@ -21,7 +21,7 @@ page = st.markdown("""
         }
         
         [data-testid=stSidebar] {
-            background-color: #1F765F;
+            background-color: #2F5B50;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -139,6 +139,7 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     goals_pens = goals - pens_made
     new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
     prediction = xg_model_decision_tree_regressor.predict(new_data)
+    predictions.append((st.session_state["jugador"], str(round(prediction[0],2))))
     if st.session_state["pens_made"] == 0:
         return  "> " + st.session_state["jugador"] + " ha marcado " + str(goals) + " goles en " + str(games) + " partidos, asistiendo " + str(assists) + " veces, siendo la suma de asistencias y goles "+str(goals_assists)+". Ha ejecutado " + str(pens_att) + " penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido " + str(goals_pens) + ".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0],2))+" goles por temporada.**"
     else:
