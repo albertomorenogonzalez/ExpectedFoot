@@ -17,12 +17,12 @@ st.set_page_config(page_icon=ruta_imagen_local_pelota, page_title="ExpectedFoot"
 page = """
 <style>
 [data-testid=stAppViewContainer]{
-    background-color: #169E79
+    background-color: #169E79;
 }.sidebar {
-    background-color: #169E79
+    background-color: #169E79;
 }
 .css-1ytj5ow {
-    background-color: #244155; /* Puede que necesites ajustar esto */
+    background-color: #169E79; /* Puede que necesites ajustar esto */
 }
 </style>
 """
