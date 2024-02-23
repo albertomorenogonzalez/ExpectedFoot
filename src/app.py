@@ -171,9 +171,9 @@ def translate(text):
                 translation = translator.translate(text, dest='en')
             elif  st.session_state["language"] == "francés":
                 translation = translator.translate(text, dest='fr')
-            elif  st.session_state["language"] == "frances":
+            elif  st.session_state["language"] == "italiano":
                 translation = translator.translate(text, dest='it')
-            elif  st.session_state["language"] == "aleman":
+            elif  st.session_state["language"] == "alemán":
                 translation = translator.translate(text, dest='de')
 
             translated_text = translation.text
