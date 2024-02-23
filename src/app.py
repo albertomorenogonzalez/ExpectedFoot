@@ -257,5 +257,5 @@ if "messages" in st.session_state:
 
 with st.sidebar:
     st.subheader("Historial de Predicciones")
-    for jugador, prediccion in predictions:
+    for jugador, prediccion in st.session_state["predictions"]:
         st.write(f"{jugador}: {prediccion} goles")
