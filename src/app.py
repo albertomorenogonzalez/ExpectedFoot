@@ -224,7 +224,25 @@ with col2:
 
 if "messages" not in st.session_state:
   st.session_state["messages"] = [{"role":"assistant","avatar":"⚽" ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
-	@@ -232,5 +263,4 @@ def translate(text):
+  st.session_state["messages"].append({"role":"assistant", "avatar":"⚽","content":translate(correct_responses[0])})
+if "messages" in st.session_state:
+   for msg in st.session_state["messages"]:
+    st.chat_message(msg["role"],avatar=msg["avatar"]).write(translate(msg["content"]))
+   if user_input := st.chat_input():
+     if st.session_state["messages"][-1]["role"] != "user":
+        st.session_state["messages"].append({"role": "user","avatar":"🦖","content": user_input})
+        st.chat_message("user",avatar="🦖").write(user_input)
+        responseMessage = translate(response(user_input))
+        st.session_state["messages"].append({"role": "assistant","avatar":"⚽", "content": responseMessage})
+        st.chat_message("assistant",avatar="⚽").write(responseMessage)
+        if responseMessage==correct_responses[7]:
+            newPrediction=compile_stats( st.session_state["games"],
+                                        st.session_state["goals"],
+                                        st.session_state["assists"],
+                                        st.session_state["pens_att"], 
+                                        st.session_state["pens_made"], 
+                                        st.session_state["progressive_carries"])
+            st.session_state["paso"]=pasos[0]
             st.session_state["messages"].append({"role": "assistant","avatar":"⚽" , "content":translate(newPrediction)})
             st.chat_message("assistant",avatar="⚽").write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":"⚽" ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
