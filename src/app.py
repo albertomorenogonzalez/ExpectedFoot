@@ -3,6 +3,7 @@ import os
 import numpy as np
 from googletrans import Translator
 import joblib
+user_image_route = os.path.join("media","usuario.png")
 modelo_ruta = 'model/xg_model_decision_tree_regressor.pkl'
 xg_model_decision_tree_regressor = joblib.load(modelo_ruta)
 
@@ -244,7 +245,7 @@ if "messages" in st.session_state:
     st.chat_message(msg["role"],avatar=msg["avatar"]).write(translate(msg["content"]))
    if user_input := st.chat_input():
      if st.session_state["messages"][-1]["role"] != "user":
-        st.session_state["messages"].append({"role": "user","avatar":"🦖","content": user_input})
+        st.session_state["messages"].append({"role": "user","avatar":user_image_route,"content": user_input})
         st.chat_message("user",avatar="🦖").write(user_input)
         responseMessage = translate(response(user_input))
         st.session_state["messages"].append({"role": "assistant","avatar":"⚽", "content": responseMessage})
