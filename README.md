@@ -16,6 +16,13 @@ Los Expected Goals ('xG') son un medida de la llamada "estadística avanzada" qu
 
 - [Francisco López González](https://github.com/franciscolg13)
 
+## Vídeo Explicativo
+
+<p align="center">
+  <a href="https://youtu.be/5pE0kwx_C0o" target="_blank">
+  <img src="" alt="Miniatura video explicativo">
+</p>
+
 ## Obtención de Datos
 
 Los datos utilizados en este proyecto son provenientes de [fbref.com](https://fbref.com/en/), una web de estadísticas históricas de clubes y jugadores de fútbol. Seleccionamos en concreto datos de las cinco ligas más importantes del mundo:
