@@ -26,8 +26,6 @@ page = st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-predictions = []
-
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
 if "jugador" not in st.session_state:
@@ -46,6 +44,8 @@ if "pens_made" not in st.session_state:
     st.session_state["pens_made"] = 0 
 if "xG" not in st.session_state:
     st.session_state["xG"] = 0 
+if "predictions" not in st.session_state:
+    st.session_state["predictions"] = []
     
 correct_responses = [
     "Introduce el nombre del jugador que desea analizar",
@@ -251,6 +251,6 @@ if "messages" in st.session_state:
             st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota , "content":translate(newPrediction)})
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
-            predictions.append((st.session_state["jugador"], st.session_state["xG"]))
-            st.write(predictions)
+            st.session_state["predictions"].append((st.session_state["jugador"], st.session_state["xG"]))
+            st.write(st.session_state["predictions"])
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate("Si quiere analizar otro jugador introduzca su nombre"))
