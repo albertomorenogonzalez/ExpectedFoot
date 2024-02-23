@@ -147,7 +147,7 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     else:
         return "> "+st.session_state["jugador"]+" ha marcado "+str(goals)+" goles en "+str(games)+" partidos, asistiendo "+str(assists)+" veces, ha ejecutado "+str(pens_att)+" penaltis, de los cuales ha marcado "+str(pens_made)+" y los goles marcados en jugada han sido "+str(goals_pens)+".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0]))+" goles por temporada.**"
         
-         
+
       
 translator = Translator()
 if "language" not in st.session_state:
