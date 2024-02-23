@@ -182,10 +182,8 @@ def translate(text):
 predictions = []
 
 with st.sidebar:
-    add_radio = st.radio(
-        "Historial de Predicciones",
-        predictions
-    )
+    st.write("Historial de Predicciones")
+    st.write(predictions)
 
 
 col1, col2, col3 = st.columns([1, 3, 1])
