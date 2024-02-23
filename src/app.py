@@ -163,8 +163,8 @@ def translate(text):
             if st.session_state["language"]=="":
                 return text
 
-            if st.session_state["jugador"]!="":
-                text=text.replace(" "+st.session_state["jugador"]+" "," x")
+            # if st.session_state["jugador"]!="":
+            #    text=text.replace(" "+st.session_state["jugador"]+" "," x")
 
             if st.session_state["language"] == "español":
                 translation = translator.translate(text, dest='es')
