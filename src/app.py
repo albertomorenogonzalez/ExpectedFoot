@@ -29,13 +29,6 @@ page = """
 """
 
 
-with st.sidebar:
-    add_radio = st.radio(
-        "Choose a shipping method",
-        ("Standard (5-15 days)", "Express (2-5 days)")
-    )
-
-
 
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
@@ -186,7 +179,13 @@ def translate(text):
     else:
         return text
 
+predictions = []
 
+with st.sidebar:
+    add_radio = st.radio(
+        "Historial de Predicciones",
+        predictions
+    )
 
 
 col1, col2, col3 = st.columns([1, 3, 1])
