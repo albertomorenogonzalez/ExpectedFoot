@@ -252,5 +252,10 @@ if "messages" in st.session_state:
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
             st.session_state["predictions"].append((st.session_state["jugador"], st.session_state["xG"]))
-            st.write(st.session_state["predictions"])
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate("Si quiere analizar otro jugador introduzca su nombre"))
+
+
+with st.sidebar:
+    st.subheader("Historial de Predicciones")
+    for jugador, prediccion in predictions:
+        st.write(f"{jugador}: {prediccion} goles")
