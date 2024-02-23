@@ -20,8 +20,17 @@ Los Expected Goals ('xG') son un medida de la llamada "estadística avanzada" qu
 
 <p align="center">
   <a href="https://youtu.be/5pE0kwx_C0o" target="_blank">
-  <img src="" alt="Miniatura video explicativo">
+  <img src="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/miniatura.jpg" alt="Miniatura video explicativo">
 </p>
+
+## Presentación del Proyecto
+
+<p align="center">
+  <a href="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/cover-slides.png" target="_blank">
+  <img src="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/Presentaci%C3%B3n_TFM_Alberto_Francisco_Ciro.pdf" alt="Miniatura presentación">
+</p>
+
+
 
 ## Obtención de Datos
 
@@ -6093,3 +6102,8 @@ from google.colab import files
 files.download('xg_prediction_model.pkl')
 ```
 
+Todas estas celdas de código pertenecen al cuaderno jupyter [ExpectedFoot](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/ExpectedFoot.ipynb) de este mismo repositorio. Para ejecutarlas y comprobar su funcionamiento de primera mano puedes descargar el archivo y ejecutar y modificar sobre él.
+
+## Conclusión
+
+Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante todo el curso nos ha servido para ver cuanto sabemos y de lo que somos capaces. Estamos muy orgullosos del resultado final que pensamos que es proporcional al esfuerzo invertido. Muchas gracias por leer hasta el final y esperamos que os haya gustado tanto el proyecto como a nosotros realizarlo.
