@@ -4195,9 +4195,6 @@ attributes
 # Con la función '.select()' nos quedaremos solo con las columnas deseadas.
 players_spark = players_spark.select(attributes)
 players_spark.show()
-
-# Eliminamos 'xG' del array de columnas para usarlo más adelante.
-attributes = attributes[:-1]
 ```
 
     +-----+-----+-------------+----------+--------+-------------------+---------+-------+----+
@@ -4397,7 +4394,13 @@ players
 
 ## Preparación de los Datos para el Entrenamiento
 
+
+Una vez que tenemos los datos bien preparados. Procederemos a efectuar el entrenamiento. Para ellos tendremos que hacer lo siguiente:
+
+
 ### Mezcla de Datos
+
+Mezclamos todos los datos por si existe algún patrón en el orden de los mismos. Si fuera el caso, el rendimiento del modelo sería menor, ya que opera en base a patrones que no son reales.
 
 
 ```python
@@ -4563,6 +4566,13 @@ players
 ### Separación de la matriz de características  X  de los datos de salida  y  (el target)
 
 
+Ahora separamos la columna `xg` del resto de datos. Esta será el *target*, el objetivo a predecir. Los dejaremos divididos en dos variables:
+
+- `y` -> El target, datos de salida. Cada valor corresponde a la misma fila en la matriz de características.
+
+- `X` -> Matriz de características. Todos aquellos datos necesarios para predecir el valor.
+
+
 ```python
 y = players["xg"]
 ```
@@ -4592,6 +4602,9 @@ y
 
 
 ```python
+# Eliminamos 'xG' del array de columnas para obtener la matriz de características.
+attributes = attributes[:-1]
+
 X = players[attributes]
 ```
 
@@ -4747,6 +4760,8 @@ X
 
 ### Creación de los Datos de Entrenamiento y de Prueba
 
+Ahora dividiremos los datos en datos de entrenamiento y datos de prueba. Para el entrenamiento solo usaremos un 80% de los datos. El porcentaje restante será utilizado para hacer pruebas de rendimiento del modelo. El porcentaje de datos que usemos es determinante también para este rendimiento.
+
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -4756,6 +4771,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 
 ```python
+# Matriz de Características de Entrenamiento
 X_train
 ```
 
@@ -4905,6 +4921,7 @@ X_train
 
 
 ```python
+# Matriz de Características de Prueba
 X_test
 ```
 
@@ -5053,6 +5070,7 @@ X_test
 
 
 ```python
+# Target de Entrenamiento
 y_train
 ```
 
@@ -5076,6 +5094,7 @@ y_train
 
 
 ```python
+# Target de Prueba
 y_test
 ```
 
@@ -5100,6 +5119,12 @@ y_test
 ### Comprobación de Similitud entre Datos de Prueba y Datos de Entrenamiento
 
 
+Para comprobar que los datos se han separado correctamente mostraremos que la distribución de los datos es igual tanto en los datos de entrenamiento como en los datos de prueba.
+
+
+#### Comprobación de Similitud del Atributo `goals`
+
+
 ```python
 X_train["goals"].hist(color='lightgreen', edgecolor="black")
 plt.show()
@@ -5122,6 +5147,7 @@ plt.show()
 ![X_testgoals.hist](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/graphics/output_128_0.png)
     
 
+#### Comprobación de Similitud del Atributo `assists`
 
 
 ```python
@@ -5146,13 +5172,33 @@ plt.show()
 ![X_testassists.hist](https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/graphics/output_130_0.png)
     
 
+Podemos observar como la distribución de ambos atributos es prácticamente igual.
+
 
 ## Entrenamiento del Modelo y Comprobación del Rendimeinto
 
-Usaremos Tres Modelos Distintos y nos quedaremso con el que se obtenga mejor rendimiento.
+Llegó la hora de la definición y entrenamiento del modelo. Existen muchos tipos de modelos de aprendizaje de Inteligencia Artificial que según las características nos pueden ofrecer unos resultados y unos rendimientos distintos. Vamos a probar tres modelos y comprobaremos como reaccionan a varias pruebas de rendimiento. Los modelos elegidos son:
+
+- Decision Tree
+
+- Random Forest
+
+- Modelo de Red Neuronal Artificial (ANN) de sklearn
+
+
+Para evaluar el rendimiento de cada algoritmo usaremos primero los datos de prueba, luego utilizaremos *mean_squared_error* y *r2_score* para obtener la puntuación en base a las predicciones utilizadas anteriormente. También usaremos el dataset de los diez mejores registros de expected goals de todos nuestros datos para ver si cada modelo es capaz de acertarlos además de los datos de prueba anteriores (esto hecho en base a pruebas manuales y en su correspondiente apartado explicaremos por qué).
+
+
+```python
+# Importamos las funciones de sklearn de mean_squared_error y r2_score
+# para usarlas en las comprobaciones de rendimiento
+from sklearn.metrics import mean_squared_error, r2_score
+```
+
 
 ### Decision Tree
 
+Es un algoritmo que toma decisiones según características de los datos, organizadas como un árbol. Cada nodo decide basado en una característica, y las ramas indican resultados. Se usan para clasificación y regresión al dividir datos en subconjuntos según características clave.
 
 ```python
 from sklearn.tree import DecisionTreeRegressor
@@ -5166,42 +5212,13 @@ dt_model.fit(X_train, y_train)
 y_pred = dt_model.predict(X_test)
 
 y_test_list = y_test.tolist()
-
-print("XG_Real    XG_Estimado   Error absoluto")
-for i in range(20):
-  r = y_test_list[i]
-  e = y_pred[i]
-  e_abs = abs(r - e)
-  print(f"{r:10.2f}   {e:12.2f}  {e_abs:16.2f}")
 ```
 
-    XG_Real    XG_Estimado   Error absoluto
-          0.20           0.33              0.12
-          0.00           0.01              0.01
-          0.80           1.05              0.25
-          0.50           0.30              0.20
-          0.20           0.17              0.03
-          6.80           9.10              2.30
-          0.20           0.10              0.10
-          0.10           0.17              0.07
-          2.40           0.60              1.80
-          2.00           1.40              0.60
-          1.50           1.30              0.20
-          1.10           0.38              0.73
-          1.20           1.10              0.10
-          0.30           0.12              0.18
-          0.80           0.60              0.20
-          0.00           0.05              0.05
-          0.00           0.01              0.01
-          0.00           0.01              0.01
-          0.70           1.20              0.50
-          2.60           1.70              0.90
+
+#### Evaluación del Rendimiento
 
 
-
-```python
-from sklearn.metrics import mean_squared_error, r2_score
-```
+Primero compararemos los targets reales de prueba con los targets predichos en base a los datos de prueba para ver la efectividad del modelo. Luego evaluaremos las puntuaciones de *mean_squared_error* y *r2_score*. Aplicaremos el mismo proceso para todos los modelos.
 
 
 ```python
@@ -5216,7 +5233,7 @@ print("Coeficiente de determinación: ", r2_score(y_test, y_pred))
     Coeficiente de determinación:  0.8117366127168071
 
 
-Ahora comporbaremos el resultado que obtiene al predecir los expected goals del top 10 de jugadores que obtuvimos previamente y veremos a ver cuantos de ellos aciertan (Lo haremos para cada modelo):
+Ahora vamos a comprobar si el modelo es capaz de predecir los expected goals que consiguieron los diez mejores registros de nuestros datos como hemos mencionado previamente y veremos que porcentaje acierta. También lo haremos en cada modelo.
 
 
 ```python
@@ -5276,6 +5293,7 @@ print("Porcentaje de acierto:", zero_per, "%")
 
 ### Random Forest
 
+Es un algoritmo de aprendizaje supervisado que construye múltiples árboles de decisión y los combina para mejorar la precisión y generalización del modelo, siendo efectivo para clasificación y regresión.
 
 ```python
 from sklearn.ensemble import RandomForestRegressor
@@ -5378,6 +5396,10 @@ print("Porcentaje de acierto:", zero_per, "%")
 
 
 ### ANN (Artificial Neuronal Networks)
+
+Una red neuronal artifical es un modelo computacional inspirado en el cerebro humano, compuesto por nodos interconectados organizados en capas. Cada nodo procesa información y transmite su resultado a nodos posteriores. Durante el entrenamiento, los pesos de estas conexiones se ajustan para que la red aprenda a mapear correctamente las entradas a las salidas. Este proceso permite a la red aprender patrones complejos y realizar tareas como clasificación, regresión, reconocimiento de patrones, entre otros.
+
+El algoritmo en concreto que vamos a utilizar se llama MLP Regressor, de scikit-learn. Es un modelo de regresión basado en redes neuronales artificiales, donde "MLP" significa Perceptrón Multicapa. Este modelo se utiliza para predecir valores numéricos a partir de datos de entrada. Se ajusta mediante algoritmos de aprendizaje para minimizar la diferencia entre las predicciones y los valores reales.
 
 
 ```python
