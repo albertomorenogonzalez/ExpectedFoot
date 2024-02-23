@@ -180,11 +180,6 @@ def translate(text):
         return text
 
 
-with st.sidebar:
-    st.subheader("Historial de Predicciones")
-    for jugador, prediccion in predictions:
-        st.write(f"{jugador}: {prediccion} goles")
-
 col1, col2, col3 = st.columns([1, 3, 1])
 
 # Espacio en blanco para las columnas izquierda y derecha
