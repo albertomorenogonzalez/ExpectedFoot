@@ -21,7 +21,7 @@ page = st.markdown("""
         }
         
         [data-testid=stSidebar] {
-            background-color: #169E79;
+            background-color: #1F765F;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -180,7 +180,7 @@ def translate(text):
 predictions = []
 
 with st.sidebar:
-    st.write("Historial de Predicciones")
+    st.h2("Historial de Predicciones")
     st.write(predictions)
 
 
