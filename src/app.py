@@ -238,8 +238,8 @@ with colu5:
 
 
 if "messages" not in st.session_state:
-  st.session_state["messages"] = [{"role":"assistant","avatar":"⚽" ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
-  st.session_state["messages"].append({"role":"assistant", "avatar":"⚽","content":translate(correct_responses[0])})
+  st.session_state["messages"] = [{"role":"assistant","avatar":ruta_imagen_local_pelota ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
+  st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota,"content":translate(correct_responses[0])})
 if "messages" in st.session_state:
    for msg in st.session_state["messages"]:
     st.chat_message(msg["role"],avatar=msg["avatar"]).write(translate(msg["content"]))
@@ -248,8 +248,8 @@ if "messages" in st.session_state:
         st.session_state["messages"].append({"role": "user","avatar":user_image_route,"content": user_input})
         st.chat_message("user",avatar=user_image_route).write(user_input)
         responseMessage = translate(response(user_input))
-        st.session_state["messages"].append({"role": "assistant","avatar":"⚽", "content": responseMessage})
-        st.chat_message("assistant",avatar="⚽").write(responseMessage)
+        st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota, "content": responseMessage})
+        st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(responseMessage)
         if responseMessage==correct_responses[7]:
             newPrediction=compile_stats( st.session_state["games"],
                                         st.session_state["goals"],
@@ -258,7 +258,7 @@ if "messages" in st.session_state:
                                         st.session_state["pens_made"], 
                                         st.session_state["progressive_carries"])
             st.session_state["paso"]=pasos[0]
-            st.session_state["messages"].append({"role": "assistant","avatar":"⚽" , "content":translate(newPrediction)})
-            st.chat_message("assistant",avatar="⚽").write(translate(newPrediction))
-            st.session_state["messages"].append({"role":"assistant", "avatar":"⚽" ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
-            st.chat_message("assistant",avatar="⚽").write(translate("Si quiere analizar otro jugador introduzca su nombre"))
+            st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota , "content":translate(newPrediction)})
+            st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate(newPrediction))
+            st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
+            st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate("Si quiere analizar otro jugador introduzca su nombre"))
