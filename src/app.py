@@ -26,7 +26,7 @@ page = st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-
+predictions = []
 
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
@@ -45,7 +45,7 @@ if "progressive_carries" not in st.session_state:
 if "pens_made" not in st.session_state:
     st.session_state["pens_made"]=0
 if "predictions" not in st.session_state:
-    st.session_state["prediction_list"]=[]
+    st.session_state["prediction_list"]=predictions
 correct_responses = [
     "Introduce el nombre del jugador que desea analizar",
   f"¿Cuántos partidos ha jugado?",
@@ -141,13 +141,8 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     goals_pens = goals - pens_made
     new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
     prediction = xg_model_decision_tree_regressor.predict(new_data)
-    st.session_state["prediction_list"].append((st.session_state["jugador"], str(round(prediction[0],2))))
-
-    with st.sidebar:
-        st.subheader("Historial de Predicciones")
-        for i in st.session_state["prediction_list"]:
-            st.write(i)
-        
+    predictions.append((st.session_state["jugador"], str(round(prediction[0],2))))
+    st.session_state["prediction_list"] = predictions
     if st.session_state["pens_made"] == 0:
         return  "> " + st.session_state["jugador"] + " ha marcado " + str(goals) + " goles en " + str(games) + " partidos, asistiendo " + str(assists) + " veces, siendo la suma de asistencias y goles "+str(goals_assists)+". Ha ejecutado " + str(pens_att) + " penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido " + str(goals_pens) + ".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0],2))+" goles por temporada.**"
     else:
@@ -186,6 +181,11 @@ def translate(text):
     else:
         return text
 
+
+with st.sidebar:
+        st.subheader("Historial de Predicciones")
+        for i in st.session_state["prediction_list"]:
+            st.write(i)
 
 
 col1, col2, col3 = st.columns([1, 3, 1])
