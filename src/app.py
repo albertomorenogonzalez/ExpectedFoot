@@ -3,10 +3,7 @@ import os
 import numpy as np
 from googletrans import Translator
 import joblib
-
-
 modelo_ruta = 'model/xg_model_decision_tree_regressor.pkl'
-
 xg_model_decision_tree_regressor = joblib.load(modelo_ruta)
 
 
@@ -34,7 +31,6 @@ st.markdown(page, unsafe_allow_html=True)
 
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
-
 if "jugador" not in st.session_state:
     st.session_state["jugador"]=""
 if "games" not in st.session_state:
@@ -49,8 +45,6 @@ if "progressive_carries" not in st.session_state:
     st.session_state["progressive_carries"]=0
 if "pens_made" not in st.session_state:
     st.session_state["pens_made"]=0
-
-
 correct_responses = [
     "Introduce el nombre del jugador que desea analizar",
   f"¿Cuántos partidos ha jugado? ",
@@ -68,10 +62,8 @@ error_responses = [
    "Error: La cantidad de goles de penalti no puede ser mayor que la cantidad total de goles marcados o penaltis ejecutados.",
    ]
 pasos=["nombre_jugador","partidos_jugados","goles_marcados","asistencias_realizadas","penaltis_ejecutados","goles_penaltis","avances_exito","analizando_datos"]
-
 if "paso" not in st.session_state:
     st.session_state["paso"]=pasos[0]
-
 def response(user_input):
    jugador=st.session_state["jugador"]
    games=st.session_state["games"]
@@ -82,19 +74,12 @@ def response(user_input):
    progressive_carries=st.session_state["progressive_carries"]
    # "Introduce el nombre del jugador que desea analizar",
    if st.session_state["paso"]==pasos[0]:
-
       if contiene_solo_letras(user_input):
-
          st.session_state["paso"]=pasos[1]
-
          st.session_state["jugador"]=user_input
-
-         return f"¿Cuántos partidos ha jugado x? "
-
+         return f"¿Cuántos partidos ha jugado el jugador? "
       else:
-
          return error_responses[0]
-
     #  f"¿Cuántos partidos ha jugado? ",
    if st.session_state["paso"]==pasos[1]:
       if not user_input.isdigit():
@@ -102,70 +87,35 @@ def response(user_input):
       elif user_input==0:
          st.session_state["paso"]=pasos[0]
          return error_responses[1]
-
       else:
-
          st.session_state["paso"]=pasos[2]
-
          st.session_state["games"]=user_input
-
-         return  f"¿Cuántos goles ha marcado x?"
-
+         return  f"¿Cuántos goles ha marcado el jugador?"
     # f"¿Cuántos goles ha marcado?",
-
    if st.session_state["paso"] == pasos[2]:
-
         if not user_input.isdigit():
-
             return error_responses[2]
-
         else:
-
             st.session_state["paso"] = pasos[3]
-
             st.session_state["goals"] = int(user_input)
-
-            return f"¿Cuántas asistencias ha realizado x? "
-
-
-
-
+            return f"¿Cuántas asistencias ha realizado el jugador? "
     # f"¿Cuántas asistencias ha realizado? ",
-
    if st.session_state["paso"] == pasos[3]:
         if not user_input.isdigit():
             return error_responses[2]
-
         else:
-
             st.session_state["paso"] = pasos[4]
-
             st.session_state["assists"] = int(user_input)
-
-            return f"¿Cuántos penaltis ha ejecutado x? "
-
-
-
-
+            return f"¿Cuántos penaltis ha ejecutado el jugador? "
     # f"¿Cuántos penaltis ha ejecutado? ",
-
    if st.session_state["paso"] == pasos[4]:
         if not user_input.isdigit():
             return error_responses[2]
-
         else:
-
             st.session_state["paso"] = pasos[5]
-
             st.session_state["pens_att"]= int(user_input)
-
-            return f"¿Cuántos goles de penalti ha marcado x de los "+str(st.session_state["pens_att"])+" penaltis ejecutados?"
-
-
-
-
+            return f"¿Cuántos goles de penalti ha marcado el jugador de los "+str(st.session_state["pens_att"])+" penaltis ejecutados?"
     # f"¿Cuántos goles de penalti ha marcado el de los penaltis ejecutados? ",
-
    if st.session_state["paso"] == pasos[5]:
         if not user_input.isdigit():
             return error_responses[2]
@@ -175,7 +125,6 @@ def response(user_input):
             st.session_state["paso"] = pasos[6]
             st.session_state["pens_made"] = int(user_input)
             return correct_responses[6]
-
     # "¿Cuántos avances con la pelota hacia el área ha realizado con éxito? ",
    if st.session_state["paso"] == pasos[6]:
         if not user_input.isdigit():
@@ -187,30 +136,15 @@ def response(user_input):
     # "Analizando datos..."
   
     
-
 def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carries):  
     goals_assists=goals+assists
     goals_pens = goals - pens_made
-
     new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
-
     prediction = xg_model_decision_tree_regressor.predict(new_data)
-
     if st.session_state["pens_made"] == 0:
-
-        return  (f"> x ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido {goals_pens}.\n **El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada.**")
-
-
-
-
+        return  (f"> el jugador ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido {goals_pens}.\n **El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada.**")
     else:
-
-        return (f"> x ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales ha marcado {pens_made} y los goles marcados en jugada han sido {goals_pens}.\n **El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada.**")
-
-
-
-
-
+        return (f"> el jugador ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales ha marcado {pens_made} y los goles marcados en jugada han sido {goals_pens}.\n **El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada.**")
 
 
 translator = Translator()
@@ -218,79 +152,30 @@ if "language" not in st.session_state:
     st.session_state["language"] = ""
 
 def translate(text):
-    
+
     if text != st.session_state["jugador"] and text is not None and not text.isdigit() and text!="":
         try:
-
             translated_text = ""
-
             if st.session_state["language"]=="":
-
                 return text
-
-
-
-
-            if st.session_state["jugador"]!="":
-
-                text=text.replace(" "+st.session_state["jugador"]+" "," x")
-
-
-
-
             if st.session_state["language"] == "español":
-
-
-
+                if st.session_state["jugador"]!="":
+                    text=text.replace(" "+st.session_state["jugador"]+" "," the player")
                 translation = translator.translate(text, dest='es')
-
-
+                translated_text = translation.text
             elif  st.session_state["language"] == "inglés":
-
-
-
+                if st.session_state["jugador"]!="":
+                    text=text.replace(" "+st.session_state["jugador"]+" "," el jugador")
                 translation = translator.translate(text, dest='en')
-
-            elif  st.session_state["language"] == "francés":
-
-                translation = translator.translate(text, dest='fr')
-
-            elif  st.session_state["language"] == "inglés":
-
-                translation = translator.translate(text, dest='it')
-
-            elif  st.session_state["language"] == "inglés":
-
-                translation = translator.translate(text, dest='de')
-
-
-
-
-            translated_text = translation.text
-
+                translated_text = translation.text
             translated_text = translated_text.replace("Pie esperado", "ExpectedFoot")
-
             translated_text = translated_text.replace("ExpectaDfoot", "ExpectedFoot")
-
-            translated_text = translated_text.replace("Pied attendu", "ExpectedFoot")
-
-            translated_text = translated_text.replace("Piede atteso", "ExpectedFoot")
-
-            translated_text = translated_text.replace("Erwarteter Fuß", "ExpectedFoot")
-
-
-
-
             if st.session_state["jugador"]!="":
-
-                translated_text = translated_text.replace(" x", " "+st.session_state["jugador"])
-
-
-
+                translated_text = translated_text.replace(" el jugador", " "+st.session_state["jugador"])
+            if st.session_state["jugador"]!="":
+                translated_text = translated_text.replace(" the player", " "+st.session_state["jugador"])
             if translated_text is None or translated_text=="":
-
                 return text
-
             return translated_text
         except Exception as e:
             print(f"Error en la traducción: {e}")
@@ -315,111 +200,31 @@ with col2:
 
 
 
-
-
-
-
-
-
-
-    colu1, colu2, colu3, colu4, colu5 = st.columns()
-
-
-
+    colu1, colu2, colu3, colu4 = st.columns([1.5,4,1,4])
 
     select_language_msg = translate("Selecciona el idioma: ")
-
     spanish_option = "Español"
-
     english_option = "English"
 
-    french_option="Français"
-
-    italian_option="Italiano"
-
-    german_option="Deutsch"
-
-
-
-
-
-
-
+    # Botón para Español en su propio contenedor
     with colu1:
-
-
-
-        container_es = st.container()
-
-        if container_es.button(spanish_option,key="A"):
-
-            st.session_state["language"] = "español"
-
+        ()
     with colu2:
-
-
-
-
-        container_en = st.container()
-
-        if container_en.button(english_option,key="B"):
-
-            st.session_state["language"] = "inglés"
-
+        container_es = st.container()
+        if container_es.button(spanish_option,key="A"):
+            st.session_state["language"] = "español"
     with colu3:
-
-        container_en = st.container()
-
-        if container_en.button(french_option,key="C"):
-
-            st.session_state["language"] = "francés"
-
+        ()
+    # Botón para Inglés en su propio contenedor
     with colu4:
-
         container_en = st.container()
-
-        if container_en.button(italian_option,key="D"):
-
-            st.session_state["language"] = "italiano"
-
-    with colu5:
-
-        container_en = st.container()
-
-        if container_en.button(german_option,key="E"):
-
-            st.session_state["language"] = "alemán"
-
-
-
-
-
+        if container_en.button(english_option,key="B"):
+            st.session_state["language"] = "inglés"
 
 
 if "messages" not in st.session_state:
   st.session_state["messages"] = [{"role":"assistant","avatar":"⚽" ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
-  st.session_state["messages"].append({"role":"assistant", "avatar":"⚽","content":translate(correct_responses[0])})
-
-if "messages" in st.session_state:
-   for msg in st.session_state["messages"]:
-    st.chat_message(msg["role"],avatar=msg["avatar"]).write(translate(msg["content"]))
-
-
-   if user_input := st.chat_input():
-     if st.session_state["messages"][-1]["role"] != "user":
-        st.session_state["messages"].append({"role": "user","avatar":"🦖","content": user_input})
-        st.chat_message("user",avatar="🦖").write(user_input)
-        responseMessage = translate(response(user_input))
-        st.session_state["messages"].append({"role": "assistant","avatar":"⚽", "content": responseMessage})
-        st.chat_message("assistant",avatar="⚽").write(responseMessage)
-        if responseMessage==correct_responses[7]:
-            newPrediction=compile_stats( st.session_state["games"],
-                                        st.session_state["goals"],
-                                        st.session_state["assists"],
-                                        st.session_state["pens_att"], 
-                                        st.session_state["pens_made"], 
-                                        st.session_state["progressive_carries"])
-            st.session_state["paso"]=pasos[0]
+	@@ -232,5 +263,4 @@ def translate(text):
             st.session_state["messages"].append({"role": "assistant","avatar":"⚽" , "content":translate(newPrediction)})
             st.chat_message("assistant",avatar="⚽").write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":"⚽" ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
