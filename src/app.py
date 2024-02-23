@@ -223,7 +223,6 @@ with colu5:
         st.session_state["language"] = "de"
 
 
-st.write(predictions)
 
 if "messages" not in st.session_state:
   st.session_state["messages"] = [{"role":"assistant","avatar":ruta_imagen_local_pelota ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
@@ -249,4 +248,5 @@ if "messages" in st.session_state:
             st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota , "content":translate(newPrediction)})
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
+            st.write(predictions)
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate("Si quiere analizar otro jugador introduzca su nombre"))
