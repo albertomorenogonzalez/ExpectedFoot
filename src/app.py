@@ -144,7 +144,7 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     st.session_state["prediction_list"].append((st.session_state["jugador"], str(round(prediction[0],2))))
 
     with st.sidebar:
-    stsubheader("Historial de Predicciones")
+    st.subheader("Historial de Predicciones")
     for i in st.session_state["prediction_list"]:
         st.write(i)
         
