@@ -179,9 +179,9 @@ def translate(text):
             translated_text = translation.text
             translated_text = translated_text.replace("Pie esperado", "ExpectedFoot")
             translated_text = translated_text.replace("ExpectaDfoot", "ExpectedFoot")
-            translated_text = translated_text.replace("Pied attendu", "ExpectedFoot")
-            translated_text = translated_text.replace("Piede atteso", "ExpectedFoot")
-            translated_text = translated_text.replace("Erwarteter Fuß", "ExpectedFoot")
+            translated_text = translated_text.replace("AwayAdfoot", "ExpectedFoot")
+            translated_text = translated_text.replace("aspettativa", "ExpectedFoot")
+            translated_text = translated_text.replace("Erwartungs-", "ExpectedFoot")
 
             if st.session_state["jugador"]!="":
                 translated_text = translated_text.replace(" x", " "+st.session_state["jugador"])
