@@ -180,7 +180,7 @@ def translate(text):
 predictions = []
 
 with st.sidebar:
-    st.h2("Historial de Predicciones")
+    st.subtitle("Historial de Predicciones")
     st.write(predictions)
 
 
