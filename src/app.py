@@ -204,16 +204,14 @@ with col2:
 
 
 
-    colu1, colu2, colu3, colu4, colu5 = st.columns(1, 1, 1, 1, 1)
+colu1, colu2, colu3, colu4, colu5 = st.columns(1, 1, 1, 1, 1)
 
-    select_language_msg = translate("Selecciona el idioma: ")
-    spanish_option = "Español"
-    english_option = "English"
-    french_option="Français"
-    italian_option="Italiano"
-    german_option="Deutsch"
-
-
+select_language_msg = translate("Selecciona el idioma: ")
+spanish_option = "Español"
+english_option = "English"
+french_option="Français"
+italian_option="Italiano"
+german_option="Deutsch"
 
 
 col1, col2, col3 = st.columns([1, 3, 1])
