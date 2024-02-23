@@ -142,7 +142,6 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
     prediction = xg_model_decision_tree_regressor.predict(new_data)
     st.session_state["prediction_list"].append((st.session_state["jugador"], str(round(prediction[0],2))))
-    st.write(st.session_state["prediction_list"])
     if st.session_state["pens_made"] == 0:
         return  "> " + st.session_state["jugador"] + " ha marcado " + str(goals) + " goles en " + str(games) + " partidos, asistiendo " + str(assists) + " veces, siendo la suma de asistencias y goles "+str(goals_assists)+". Ha ejecutado " + str(pens_att) + " penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido " + str(goals_pens) + ".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0],2))+" goles por temporada.**"
     else:
@@ -184,7 +183,8 @@ def translate(text):
 
 with st.sidebar:
     st.subheader("Historial de Predicciones")
-    st.write(st.session_state["prediction_list"])
+    for i in st.session_state["prediction_list"]
+        st.write(i)
 
 
 col1, col2, col3 = st.columns([1, 3, 1])
@@ -233,7 +233,6 @@ with colu5:
 if "messages" not in st.session_state:
   st.session_state["messages"] = [{"role":"assistant","avatar":ruta_imagen_local_pelota ,"content":translate("¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores.")}]
   st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota,"content":translate(correct_responses[0])})
-  st.write(st.session_state["messages"])
 if "messages" in st.session_state:
    for msg in st.session_state["messages"]:
     st.chat_message(msg["role"],avatar=msg["avatar"]).write(translate(msg["content"]))
