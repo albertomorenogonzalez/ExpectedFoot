@@ -31,19 +31,22 @@ predictions = []
 def contiene_solo_letras(cadena):
     return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
 if "jugador" not in st.session_state:
-    st.session_state["jugador"]=""
+    st.session_state["jugador"] = ""
 if "games" not in st.session_state:
-    st.session_state["games"]=0
+    st.session_state["games"] = 0
 if "goals" not in st.session_state:
-    st.session_state["goals"]=0
+    st.session_state["goals"] = 0
 if "assists" not in st.session_state:
-    st.session_state["assists"]=0
+    st.session_state["assists"] = 0
 if "pens_att" not in st.session_state:
-    st.session_state["pens_att"]=0
+    st.session_state["pens_att"] = 0
 if "progressive_carries" not in st.session_state:
-    st.session_state["progressive_carries"]=0
+    st.session_state["progressive_carries"]= 0
 if "pens_made" not in st.session_state:
-    st.session_state["pens_made"]=0
+    st.session_state["pens_made"] = 0 
+if "xG" not in st.session_state:
+    st.session_state["xG"] = 0 
+    
 correct_responses = [
     "Introduce el nombre del jugador que desea analizar",
   f"¿Cuántos partidos ha jugado?",
@@ -139,7 +142,7 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     goals_pens = goals - pens_made
     new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
     prediction = xg_model_decision_tree_regressor.predict(new_data)
-    predictions.append((st.session_state["jugador"], str(round(prediction[0],2))))
+    st.session_state["xG"] = round(prediction[0],2)
     if st.session_state["pens_made"] == 0:
         return  "> " + st.session_state["jugador"] + " ha marcado " + str(goals) + " goles en " + str(games) + " partidos, asistiendo " + str(assists) + " veces, siendo la suma de asistencias y goles "+str(goals_assists)+". Ha ejecutado " + str(pens_att) + " penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido " + str(goals_pens) + ".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0],2))+" goles por temporada.**"
     else:
@@ -238,7 +241,7 @@ if "messages" in st.session_state:
         st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota, "content": responseMessage})
         st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(responseMessage)
         if responseMessage==correct_responses[7]:
-            newPrediction=compile_stats( st.session_state["games"],
+            newPrediction=compile_stats(st.session_state["games"],
                                         st.session_state["goals"],
                                         st.session_state["assists"],
                                         st.session_state["pens_att"], 
@@ -248,5 +251,6 @@ if "messages" in st.session_state:
             st.session_state["messages"].append({"role": "assistant","avatar":ruta_imagen_local_pelota , "content":translate(newPrediction)})
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate(newPrediction))
             st.session_state["messages"].append({"role":"assistant", "avatar":ruta_imagen_local_pelota ,"content":translate("Si quiere analizar otro jugador introduzca su nombre")})
+            predictions.append((st.session_state["jugador"], st.session_state["xG"]))
             st.write(predictions)
             st.chat_message("assistant",avatar=ruta_imagen_local_pelota).write(translate("Si quiere analizar otro jugador introduzca su nombre"))
