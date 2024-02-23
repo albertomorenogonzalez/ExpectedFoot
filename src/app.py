@@ -183,7 +183,7 @@ def translate(text):
 
 with st.sidebar:
     st.subheader("Historial de Predicciones")
-    for i in st.session_state["prediction_list"]
+    for i in st.session_state["prediction_list"]:
         st.write(i)
 
 
