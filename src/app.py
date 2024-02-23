@@ -144,9 +144,9 @@ def compile_stats(games, goals, assists, pens_att, pens_made, progressive_carrie
     st.session_state["prediction_list"].append((st.session_state["jugador"], str(round(prediction[0],2))))
 
     with st.sidebar:
-    st.subheader("Historial de Predicciones")
-    for i in st.session_state["prediction_list"]:
-        st.write(i)
+        st.subheader("Historial de Predicciones")
+        for i in st.session_state["prediction_list"]:
+            st.write(i)
         
     if st.session_state["pens_made"] == 0:
         return  "> " + st.session_state["jugador"] + " ha marcado " + str(goals) + " goles en " + str(games) + " partidos, asistiendo " + str(assists) + " veces, siendo la suma de asistencias y goles "+str(goals_assists)+". Ha ejecutado " + str(pens_att) + " penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido " + str(goals_pens) + ".\n **El resultado de los goles esperados del jugador es de "+str(round(prediction[0],2))+" goles por temporada.**"
