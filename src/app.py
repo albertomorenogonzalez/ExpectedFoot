@@ -48,7 +48,7 @@ if "pens_made" not in st.session_state:
     st.session_state["pens_made"]=0
 correct_responses = [
     "Introduce el nombre del jugador que desea analizar",
-  f"¿Cuántos partidos ha jugado? ",
+  f"¿Cuántos partidos ha jugado? {st.session_state["jugador"]}",
  f"¿Cuántos goles ha marcado?",
  f"¿Cuántas asistencias ha realizado? ",
   f"¿Cuántos penaltis ha ejecutado? ",
