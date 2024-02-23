@@ -151,29 +151,40 @@ translator = Translator()
 if "language" not in st.session_state:
     st.session_state["language"] = ""
 
+translator = Translator()
+if "language" not in st.session_state:
+    st.session_state["language"] = ""
 def translate(text):
-
+    
     if text != st.session_state["jugador"] and text is not None and not text.isdigit() and text!="":
         try:
             translated_text = ""
             if st.session_state["language"]=="":
                 return text
+
+            if st.session_state["jugador"]!="":
+                text=text.replace(" "+st.session_state["jugador"]+" "," x")
+
             if st.session_state["language"] == "español":
-                if st.session_state["jugador"]!="":
-                    text=text.replace(" "+st.session_state["jugador"]+" "," the player")
                 translation = translator.translate(text, dest='es')
-                translated_text = translation.text
             elif  st.session_state["language"] == "inglés":
-                if st.session_state["jugador"]!="":
-                    text=text.replace(" "+st.session_state["jugador"]+" "," el jugador")
                 translation = translator.translate(text, dest='en')
-                translated_text = translation.text
+            elif  st.session_state["language"] == "francés":
+                translation = translator.translate(text, dest='fr')
+            elif  st.session_state["language"] == "inglés":
+                translation = translator.translate(text, dest='it')
+            elif  st.session_state["language"] == "inglés":
+                translation = translator.translate(text, dest='de')
+
+            translated_text = translation.text
             translated_text = translated_text.replace("Pie esperado", "ExpectedFoot")
             translated_text = translated_text.replace("ExpectaDfoot", "ExpectedFoot")
+            translated_text = translated_text.replace("Pied attendu", "ExpectedFoot")
+            translated_text = translated_text.replace("Piede atteso", "ExpectedFoot")
+            translated_text = translated_text.replace("Erwarteter Fuß", "ExpectedFoot")
+
             if st.session_state["jugador"]!="":
-                translated_text = translated_text.replace(" el jugador", " "+st.session_state["jugador"])
-            if st.session_state["jugador"]!="":
-                translated_text = translated_text.replace(" the player", " "+st.session_state["jugador"])
+                translated_text = translated_text.replace(" x", " "+st.session_state["jugador"])
             if translated_text is None or translated_text=="":
                 return text
             return translated_text
@@ -181,6 +192,26 @@ def translate(text):
             print(f"Error en la traducción: {e}")
     else:
         return text
+col1, col2, col3 = st.columns([1, 3, 1])
+# Espacio en blanco para las columnas izquierda y derecha
+with col1:
+    st.write("")
+with col3:
+    st.write("")
+# Colocar la imagen en la columna central
+with col2:
+    st.image(ruta_imagen_local, width=200, use_column_width=True)
+
+
+
+    colu1, colu2, colu3, colu4, colu5 = st.columns()
+
+    select_language_msg = translate("Selecciona el idioma: ")
+    spanish_option = "Español"
+    english_option = "English"
+    french_option="Français"
+    italian_option="Italiano"
+    german_option="Deutsch"
 
 
 
