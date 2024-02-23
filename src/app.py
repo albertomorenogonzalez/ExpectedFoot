@@ -184,8 +184,8 @@ def translate(text):
             translated_text = translated_text.replace("aspettativa", "ExpectedFoot")
             translated_text = translated_text.replace("Erwartungs", "ExpectedFoot-")
 
-            if st.session_state["jugador"]!="":
-                translated_text = translated_text.replace(" x", " "+st.session_state["jugador"])
+            # if st.session_state["jugador"]!="":
+            #    translated_text = translated_text.replace(" x", " "+st.session_state["jugador"])
             if translated_text is None or translated_text=="":
                 return text
             return translated_text
