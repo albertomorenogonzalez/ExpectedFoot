@@ -26,8 +26,8 @@ Los Expected Goals ('xG') son un medida de la llamada "estadística avanzada" qu
 ## Presentación del Proyecto
 
 <p align="center">
-  <a href="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/cover-slides.png" target="_blank">
-  <img src="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/Presentaci%C3%B3n_TFM_Alberto_Francisco_Ciro.pdf" alt="Miniatura presentación">
+  <a href="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/Presentaci%C3%B3n_TFM_Alberto_Francisco_Ciro.pdf" target="_blank">
+  <img src="https://github.com/albertomorenogonzalez/ExpectedFoot/blob/main/media/cover-slides.png" width=35% alt="Miniatura presentación">
 </p>
 
 
