@@ -4106,14 +4106,19 @@ Ahora que ya tenemos los datos listos para trabajarlos con PySpark, vamos a proc
 
 
 ```python
+# Importamos la función 'col' para acceder a una columna específica del DataFrame
 from pyspark.sql.functions import col
 
+# Definimos en un array las temporadas que queremos eliminar
 season_to_delete = ["2015-2016", "2016-2017"]
 
-# Filtra el DataFrame para mantener solo las temporadas deseadas
+# Filtramos en el DataFrame aquellas temporadas que no corresponde al del array
+# que acabamos de definir de la siguiente manera:
+# - La virgulilla (~) indica lo contrario a lo que está buscando.
 players_spark = players_spark.filter(~col("season").isin(season_to_delete))
 
-# Muestra el DataFrame resultante
+# Mostramos el DataFrame. Si todo ha ido bien la primera entrada corresponderá
+# a la temporada 2017/2018
 players_spark.show()
 ```
 
@@ -4147,6 +4152,7 @@ players_spark.show()
 
 
 ```python
+# Mostramos el número de entradas que tenemos ahora mismo.
 players_spark.count()
 ```
 
@@ -4159,10 +4165,12 @@ players_spark.count()
 
 ### Eliminación de Columnas no Necesarias
 
-Nos quedaremos solo con las columnas que más aporten al entrenamiento.
+Ahora nos quedaremos solamente con las columnas que más correlación guardaban y que elegimos anteriormente: `goals`, `goals_assists`, `goals_pens`, `pens_att`,  `progressive_carries`, `pens_made`, `assists` y `games`. El resto de columnas las eliminaremos.
 
 
 ```python
+# Usaremos el array de atributos que definimos antes para observar las correlaciones
+# en una gráfica añadiéndolo el atributo de 'xG'.
 attributes.append('xg')
 attributes
 ```
@@ -4184,9 +4192,12 @@ attributes
 
 
 ```python
+# Con la función '.select()' nos quedaremos solo con las columnas deseadas.
 players_spark = players_spark.select(attributes)
-attributes = attributes[:-1]
 players_spark.show()
+
+# Eliminamos 'xG' del array de columnas para usarlo más adelante.
+attributes = attributes[:-1]
 ```
 
     +-----+-----+-------------+----------+--------+-------------------+---------+-------+----+
@@ -4218,6 +4229,9 @@ players_spark.show()
 
 
 ### Convirtiendo el DataFrame de PySpark a Pandas
+
+
+Ahora que ya hemos hecho la transformación de los datos con PySpark, convertiremos los datos de nuevo a Pandas para realizar el entrenamiento del modelo.
 
 
 ```python
@@ -5499,227 +5513,3 @@ from google.colab import files
 
 files.download('xg_prediction_model.pkl')
 ``` 
-
-
-## Chatbot para la Web
-
-Para la página web utilizaremos un ChatBot que interactuará con el usuario para pedir los datos por pantalla y mostrarle la predicción:
-
-Puedes elegir para hablar con él en Español y en Inglés
-
-
-```python
-!pip install nltk googletrans==4.0.0-rc1
-```
-
-    Requirement already satisfied: nltk in /usr/local/lib/python3.10/dist-packages (3.8.1)
-    Collecting googletrans==4.0.0-rc1
-      Downloading googletrans-4.0.0rc1.tar.gz (20 kB)
-      Preparing metadata (setup.py) ... [?25l[?25hdone
-    Collecting httpx==0.13.3 (from googletrans==4.0.0-rc1)
-      Downloading httpx-0.13.3-py3-none-any.whl (55 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m55.1/55.1 kB[0m [31m2.2 MB/s[0m eta [36m0:00:00[0m
-    [?25hRequirement already satisfied: certifi in /usr/local/lib/python3.10/dist-packages (from httpx==0.13.3->googletrans==4.0.0-rc1) (2024.2.2)
-    Collecting hstspreload (from httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading hstspreload-2024.2.1-py3-none-any.whl (1.1 MB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.1/1.1 MB[0m [31m7.0 MB/s[0m eta [36m0:00:00[0m
-    [?25hRequirement already satisfied: sniffio in /usr/local/lib/python3.10/dist-packages (from httpx==0.13.3->googletrans==4.0.0-rc1) (1.3.0)
-    Collecting chardet==3.* (from httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading chardet-3.0.4-py2.py3-none-any.whl (133 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m133.4/133.4 kB[0m [31m8.3 MB/s[0m eta [36m0:00:00[0m
-    [?25hCollecting idna==2.* (from httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading idna-2.10-py2.py3-none-any.whl (58 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m58.8/58.8 kB[0m [31m8.1 MB/s[0m eta [36m0:00:00[0m
-    [?25hCollecting rfc3986<2,>=1.3 (from httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading rfc3986-1.5.0-py2.py3-none-any.whl (31 kB)
-    Collecting httpcore==0.9.* (from httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading httpcore-0.9.1-py3-none-any.whl (42 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m42.6/42.6 kB[0m [31m4.9 MB/s[0m eta [36m0:00:00[0m
-    [?25hCollecting h11<0.10,>=0.8 (from httpcore==0.9.*->httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading h11-0.9.0-py2.py3-none-any.whl (53 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m53.6/53.6 kB[0m [31m6.0 MB/s[0m eta [36m0:00:00[0m
-    [?25hCollecting h2==3.* (from httpcore==0.9.*->httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading h2-3.2.0-py2.py3-none-any.whl (65 kB)
-    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m65.0/65.0 kB[0m [31m8.7 MB/s[0m eta [36m0:00:00[0m
-    [?25hCollecting hyperframe<6,>=5.2.0 (from h2==3.*->httpcore==0.9.*->httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading hyperframe-5.2.0-py2.py3-none-any.whl (12 kB)
-    Collecting hpack<4,>=3.0 (from h2==3.*->httpcore==0.9.*->httpx==0.13.3->googletrans==4.0.0-rc1)
-      Downloading hpack-3.0.0-py2.py3-none-any.whl (38 kB)
-    Requirement already satisfied: click in /usr/local/lib/python3.10/dist-packages (from nltk) (8.1.7)
-    Requirement already satisfied: joblib in /usr/local/lib/python3.10/dist-packages (from nltk) (1.3.2)
-    Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/dist-packages (from nltk) (2023.12.25)
-    Requirement already satisfied: tqdm in /usr/local/lib/python3.10/dist-packages (from nltk) (4.66.2)
-    Building wheels for collected packages: googletrans
-      Building wheel for googletrans (setup.py) ... [?25l[?25hdone
-      Created wheel for googletrans: filename=googletrans-4.0.0rc1-py3-none-any.whl size=17396 sha256=a25290ce220ab85552338fb3c886d2d99ce8c338fa2d29e2b076225ae1a082ca
-      Stored in directory: /root/.cache/pip/wheels/c0/59/9f/7372f0cf70160fe61b528532e1a7c8498c4becd6bcffb022de
-    Successfully built googletrans
-    Installing collected packages: rfc3986, hyperframe, hpack, h11, chardet, idna, hstspreload, h2, httpcore, httpx, googletrans
-      Attempting uninstall: chardet
-        Found existing installation: chardet 5.2.0
-        Uninstalling chardet-5.2.0:
-          Successfully uninstalled chardet-5.2.0
-      Attempting uninstall: idna
-        Found existing installation: idna 3.6
-        Uninstalling idna-3.6:
-          Successfully uninstalled idna-3.6
-    Successfully installed chardet-3.0.4 googletrans-4.0.0rc1 h11-0.9.0 h2-3.2.0 hpack-3.0.0 hstspreload-2024.2.1 httpcore-0.9.1 httpx-0.13.3 hyperframe-5.2.0 idna-2.10 rfc3986-1.5.0
-
-
-
-
-
-```python
-import numpy as np
-from googletrans import Translator
-
-translator = Translator()
-
-def chatbot_message(user, message):
-    translated_message = translate(message)
-    translated_message = translated_message.replace("Pie esperado", "ExpectedFoot")
-    translated_message = translated_message.replace("ExpectaDfoot", "ExpectedFoot")
-    print(f"{user}: {translated_message}")
-
-def ask_question_and_get_input(question):
-    translated_question = translate(question)
-    return input(f"Usuario: {translated_question} ")
-
-def choose_language():
-    while True:
-        language_choice = input("Seleccione el idioma (español / inglés): ").lower()
-        if language_choice in ['español', 'ingles']:
-            return language_choice
-        else:
-            print("Por favor, seleccione un idioma válido.")
-
-def translate(text):
-    global chosen_language
-    language_code = {'español': 'es', 'ingles': 'en'}
-    dest_language = language_code.get(chosen_language.lower())
-
-    if dest_language:
-        translation = translator.translate(text, dest=dest_language)
-        return translation.text
-    else:
-        print("Error: Idioma de destino no válido.")
-        return text
-
-chosen_language = choose_language()
-
-
-mensaje_inicial = ("ExpectedFoot", f"¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores. Para comenzar, escribe 'comenzar'.")
-
-conversation_history = []
-
-
-for message in mensaje_inicial:
-    chatbot_message("ExpectedFoot", message)
-
-
-while True:
-    start_message = input("Usuario: ")
-    chatbot_message("Usuario", start_message.lower())
-
-    if start_message.lower() == 'comenzar' or 'start':
-        break
-    else:
-        chatbot_message("ExpectedFoot", "Para comenzar, escribe 'comenzar'.")
-
-def contiene_solo_letras(cadena):
-    return all(caracter.isalpha() or caracter.isspace() for caracter in cadena)
-
-while True:
-    user_input_message = "Introduce el nombre del jugador que desea analizar"
-    translated_user_input_message = translate(user_input_message)
-    player = input(f"Usuario: {translated_user_input_message} ")
-    if contiene_solo_letras(player):
-        break
-    else:
-        error_name = ("Por favor, introduce correctamente el nombre del jugador.")
-        error_name_translate = translate(error_name)
-        print(error_name)
-
-chatbot_message("ExpectedFoot", f"Vamos a analizar al jugador {player}")
-
-games = ("Usuario: ¿Cuántos partidos ha jugado el jugador? ")
-translated_user_input_message = translate(games)
-games = input(f"{translated_user_input_message} ")
-
-if games == 0:
-    chatbot_message("ExpectedFoot", f"{player} no ha jugado ningún partido. No podemos seguir analizando a este jugador.")
-else:
-    chatbot_message("ExpectedFoot", f"{player} ha jugado {games} partidos.")
-
-
-goals = ("Usuario: ¿Cuántos goles ha marcado el jugador? ")
-translated_user_input_message = translate(goals)
-goals = int(input(f"{translated_user_input_message} "))
-chatbot_message("ExpectedFoot", f"{player} ha marcado {goals} goles.")
-
-assists = ("Usuario: ¿Cuántas asistencias ha realizado el jugador? ")
-translated_user_input_message = translate(assists)
-assists = int(input(f"{translated_user_input_message} "))
-chatbot_message("ExpectedFoot", f"{player} ha realizado {assists} asistencias de gol.")
-
-goals_assists = goals + assists
-chatbot_message("ExpectedFoot", f"La suma de goles y asistencias juntas son {goals_assists}")
-
-pens_att = ("Usuario: ¿Cuántos penaltis ha ejecutado el jugador? ")
-translated_user_input_message = translate(pens_att)
-pens_att = int(input(f"{translated_user_input_message} "))
-chatbot_message("ExpectedFoot", f"{player} ha tirado {pens_att} penaltis")
-
-while True:
-    pens_made = (f"Usuario: ¿Cuántos goles de penalti ha marcado el jugador de los {pens_att} penaltis ejecutados? ")
-    translated_user_input_message = translate(pens_made)
-    pens_made = int(input(f"{translated_user_input_message} "))
-    if 0 <= pens_made <= pens_att and pens_made <= goals:
-        break
-    else:
-        chatbot_message("ExpectedFoot", "Error: La cantidad de goles de penalti no puede ser mayor que la cantidad total de goles marcados o penaltis ejecutados.")
-
-goals_pens = goals - pens_made
-chatbot_message("ExpectedFoot", f"Según los datos de goles de penalti, los goles marcados en jugadas son {goals_pens} goles")
-
-progressive_carries = ("Usuario: ¿Cuántos avances con la pelota hacia el área ha realizado con éxito? ")
-translated_user_input_message = translate(progressive_carries)
-progressive_carries = int(input(f"{translated_user_input_message} "))
-chatbot_message("ExpectedFoot", f"{player} ha regateado exitosamente {progressive_carries} veces a jugadores cerca del aerea")
-
-new_data = [[games, goals, assists, goals_assists, pens_att, pens_made, goals_pens, progressive_carries]]
-
-prediction = dt_model.predict(new_data)
-
-if pens_made == 0:
-    no_goal_pen = (f"{player} ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales no marcado ninguno y los goles marcados en jugada han sido {goals_pens}.\n El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada")
-    no_goal_pen_translate = translate(no_goal_pen)
-    print(no_goal_pen)
-else:
-    goal_pen = (f"{player} ha marcado {goals} goles en {games} partidos, asistiendo {assists} veces, ha ejecutado {pens_att} penaltis, de los cuales ha marcado {pens_made} y los goles marcados en jugada han sido {goals_pens}.\n El resultado de los goles esperados del jugador es de {prediction[0]:.2f} goles por temporada")
-    goal_pen_translate = translate(goal_pen)
-    print(goal_pen)
-```
-
-    Seleccione el idioma (español / inglés): español
-    ExpectedFoot: ExpectedFoot
-    ExpectedFoot: ¡Hola! Soy el asistente de ExpectedFoot, tu analizador de jugadores. Para comenzar, escribe 'comenzar'.
-    Usuario: comenzar
-    Usuario: comenzar
-    Usuario: Introduce el nombre del jugador que desea analizar Roberto Fernández
-    ExpectedFoot: Vamos a analizar al jugador Roberto Fernández
-    Usuario: ¿Cuántos partidos ha jugado el jugador? 24
-    ExpectedFoot: Roberto Fernández ha jugado 24 partidos.
-    Usuario: ¿Cuántos goles ha marcado el jugador? 11
-    ExpectedFoot: Roberto Fernández ha marcado 11 goles.
-    Usuario: ¿Cuántas asistencias ha realizado el jugador? 4
-    ExpectedFoot: Roberto Fernández ha realizado 4 asistencias de gol.
-    ExpectedFoot: La suma de goles y asistencias juntas son 15
-    Usuario: ¿Cuántos penaltis ha ejecutado el jugador? 1
-    ExpectedFoot: Roberto Fernández ha tirado 1 penaltis
-    Usuario: ¿Cuántos goles de penalti ha marcado el jugador de los 1 penaltis ejecutados? 1
-    ExpectedFoot: Según los datos de goles de penalti, los goles marcados en jugadas son 10 goles
-    Usuario: ¿Cuántos avances con la pelota hacia el área ha realizado con éxito? 40
-    ExpectedFoot: Roberto Fernández ha regateado exitosamente 40 veces a jugadores cerca del aerea
-    Roberto Fernández ha marcado 11 goles en 24 partidos, asistiendo 4 veces, ha ejecutado 1 penaltis, de los cuales ha marcado 1 y los goles marcados en jugada han sido 10.
-     El resultado de los goles esperados del jugador es de 7.20 goles por temporada
