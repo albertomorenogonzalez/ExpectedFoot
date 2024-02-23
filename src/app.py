@@ -16,6 +16,10 @@ st.set_page_config(page_icon=ruta_imagen_local_pelota, page_title="ExpectedFoot"
 
 page = st.markdown("""
     <style>
+        [data-testid=stAppViewContainer]{
+            background-color: #169E79
+        }
+        
         [data-testid=stSidebar] {
             background-color: #169E79;
         }
