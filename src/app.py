@@ -258,5 +258,5 @@ if "messages" in st.session_state:
 with st.sidebar:
     st.subheader(translate("Historial de Predicciones"))
     for jugador, prediccion in st.session_state["predictions"]:
-        texto = "<div style='background-color:#2F5B50; padding: 10px; margin: 3px'>{}: {} xG</div>".format(jugador, prediccion)
+        texto = "<div style='background-color:#2F5B50; padding: 10px; margin: 2px'>{}: {} xG</div>".format(jugador, prediccion)
         st.write(texto, unsafe_allow_html=True)
