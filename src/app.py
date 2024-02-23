@@ -78,7 +78,7 @@ def response(user_input):
       if contiene_solo_letras(user_input):
          st.session_state["paso"]=pasos[1]
          st.session_state["jugador"]=user_input
-         return f"¿Cuántos partidos ha jugado el jugador? " + st.session_state["jugador"] + "2"
+         return f"¿Cuántos partidos ha jugado el jugador? " + st.session_state["jugador"] + " 2"
       else:
          return error_responses[0]
     #  f"¿Cuántos partidos ha jugado? ",
