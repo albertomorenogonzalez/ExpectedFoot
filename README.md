@@ -6119,9 +6119,19 @@ Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante
 ## Participación
 
 #### Alberto:
+* Documentación del Proyecto (ReadMe y colab)
+* Exploración y Visualización de los datos
+* Limpieza de los datos
+* Historial de la web
+* Conclusión
 #### Ciro: 
 * Parte de scraping de los datos.
 * Extracción de los campos del html obtenido del scraping a un dataframe.
 * Implementación del chatbot y traducciones en la aplicación de streamlit.
 * 33% del proyecto.
 #### Francisco:
+* Ejecucion scrap
+* Creacion chatbot
+* parte diseño web
+* parte de documentacion de colab en la parte de los expected
+* ⁠cambio de radio a boton en la web
