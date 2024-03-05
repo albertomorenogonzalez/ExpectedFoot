@@ -6123,7 +6123,7 @@ Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante
 * Exploración y Visualización de los datos
 * Limpieza de los datos
 * Historial de la web
-* Conclusión
+* Conclusión
 #### Ciro: 
 * Parte de scraping de los datos.
 * Extracción de los campos del html obtenido del scraping a un dataframe.
