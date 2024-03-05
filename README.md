@@ -6116,9 +6116,12 @@ Enlace a la página web que hemos creado para hacer uso del modelo entrenado
 
 Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante todo el curso nos ha servido para ver cuanto sabemos y de lo que somos capaces. Estamos muy orgullosos del resultado final que pensamos que es proporcional al esfuerzo invertido. Muchas gracias por leer hasta el final y esperamos que os haya gustado tanto el proyecto como a nosotros realizarlo.
 
+## Participación
+
 #### Alberto:
 #### Ciro: 
 * Parte de scraping de los datos.
 * Extracción de los campos del html obtenido del scraping a un dataframe.
 * Implementación del chatbot y traducciones en la aplicación de streamlit.
+* 33% del proyecto.
 #### Francisco:
