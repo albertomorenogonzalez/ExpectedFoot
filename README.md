@@ -6128,8 +6128,7 @@ Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante
 * Conclusión
 * En opinion de Alberto el trabajo ha estado repartido en:
 #### Ciro: 
-* Parte de scraping de los datos.
-* Extracción de los campos del html obtenido del scraping a un dataframe.
+* Parte de scraping de los datos y extracción de los campos del html obtenido del scraping a un dataframe.
 * Implementación del chatbot y traducciones en la aplicación de streamlit.
 * En opinion de Ciro el trabajo ha estado repartido en: 33% - 33% - 33%.
 #### Francisco:
