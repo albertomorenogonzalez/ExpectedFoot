@@ -6118,25 +6118,8 @@ Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante
 
 ## Participación
 
-#### Alberto:
-* Documentación del Proyecto (ReadMe y colab)
-* Exploración y Visualización de los datos
-* Limpieza de los datos
-* Historial de la web
-* Parte diseño web y edición de la misma
-* Realización de presentación
-* Conclusión
-* En opinion de Alberto el trabajo ha estado repartido en:
-#### Ciro: 
-* Parte de scraping de los datos y extracción de los campos del html obtenido del scraping a un dataframe.
-* Implementación del chatbot y traducciones en la aplicación de streamlit.
-* En opinion de Ciro el trabajo ha estado repartido en: 33% - 33% - 33%.
-#### Francisco:
-* Ejecución scrap.
-* Creacion chatbot.
-* Parte diseño web y edición de la misma.
-* Parte de documentación de colab en la parte de los expected.
-* Inicio de traducción al ingles en primer plano, los demas idiomas se añadieron por último por el compañero.
-* ⁠Cambio de radio a boton en la web para la selección de idiomas.
-* Realización de presentación
-* En opinion de Fran el trabajo ha estado repartido en: 45% - 15% - 40%
+#### Alberto: 40%
+
+#### Ciro: 20%
+
+#### Francisco: 40%
