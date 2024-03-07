@@ -6118,8 +6118,8 @@ Este trabajo en el que hemos aplicado todos los conocimientos aprendidos durante
 
 ## Participación
 
-#### Alberto: 40%
+#### Alberto: 37.5%
 
-#### Ciro: 20%
+#### Ciro: 25%
 
-#### Francisco: 40%
+#### Francisco: 37.5%
